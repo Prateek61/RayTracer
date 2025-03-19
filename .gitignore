@@ -1,0 +1,34 @@
+# VS Code
+.vscode/
+
+# Visual Studio Project Files
+.vs/
+**.user
+**.sln
+**.vcxproj
+**.vcxproj.filters
+**.csproj
+
+# Binary files
+**/bin/
+bin-int/
+Intermediates/
+
+# ImGui
+**/imgui.ini
+
+# Log files
+**.log
+# Profile files
+**.profile.json
+
+# MakeFile
+**/MakeFile
+**.make
+
+# Asset files
+Assets/test/
+Assets/**/test/
+
+# Processed Texture
+**/*.glsl.processed
