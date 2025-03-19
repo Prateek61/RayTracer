@@ -1,5 +1,5 @@
 #include "Engine.h"
-#include "ExampleLayer.h"
+#include "MainLayer.h"
 #include "Core/EntryPoint.h"
 
 class App : public Engine::Application
@@ -8,20 +8,20 @@ public:
 	App(const Engine::ApplicationProps& props)
 		: Engine::Application(props)
 	{
-		PushLayer(new ExampleLayer(props.WindowProps.Width, props.WindowProps.Height));
+		PushLayer(new MainLayer(props.WindowProps.Width, props.WindowProps.Height));
 	}
 };
 
 Engine::Application* Engine::CreateApplication(Engine::ApplicationCommandLineArgs args)
 {
 	Engine::WindowProps window_props{
-		"Example Application!!",
+		"Ray Tracing",
 		1280,
 		720,
 		true
 	};
 	Engine::ApplicationProps application_props{
-		"Example Application",
+		"Ray Tracing",
 		"../Assets/",
 		args,
 		window_props

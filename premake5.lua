@@ -1,6 +1,6 @@
 include "Dependencies.lua"
 
-workspace "OpenGL"
+workspace "RayTracer"
     startproject "App"
     architecture "x64"
 

@@ -1,7 +1,8 @@
-#include "ExampleLayer.h"
+#include "MainLayer.h"
 #include "imgui.h"
+#include "Utils.h"
 
-void ExampleLayer::OnAttach()
+void MainLayer::OnAttach()
 {
 	m_ViewportTexture = std::make_unique<ViewportTexture>(m_Width, m_Height);
 	m_ViewportTexture->ShaderMeta.AddBasePath("../Assets/");
@@ -11,7 +12,7 @@ void ExampleLayer::OnAttach()
 	RenderImage();
 }
 
-void ExampleLayer::OnUpdate(Engine::TimeStep ts)
+void MainLayer::OnUpdate(Engine::TimeStep ts)
 {
 	Engine::RendererCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
 	Engine::RendererCommand::Clear();
@@ -19,7 +20,7 @@ void ExampleLayer::OnUpdate(Engine::TimeStep ts)
 	m_ViewportTexture->Draw();
 }
 
-void ExampleLayer::OnImGuiRender(Engine::TimeStep ts)
+void MainLayer::OnImGuiRender(Engine::TimeStep ts)
 {
 	ImGui::Begin("Settings");
 
@@ -35,17 +36,24 @@ void ExampleLayer::OnImGuiRender(Engine::TimeStep ts)
 	ImGui::End();
 }
 
-void ExampleLayer::RenderImage()
+void MainLayer::RenderImage()
 {
 	Engine::Timer timer;
 
+	uint32_t* data = m_ImageBuffer.As<uint32_t>();
+
 	// Loop over the pixels in the image buffer and set them to a random color
-	uint32_t size = m_Width * m_Height;
-	for (uint32_t i = 0; i < size; i++)
+	for (uint32_t y = 0; y < m_Height; y++)
 	{
-		uint32_t color = Engine::Random::UInt();
-		color |= 0xFF000000;
-		m_ImageBuffer.As<uint32_t>()[i] = color;
+		for (uint32_t x = 0; x < m_Width; x++)
+		{
+			float r = static_cast<float>(x) / m_Width;
+			float g = static_cast<float>(y) / m_Height;
+			float b = 0.2f;
+
+			uint32_t pixel = ConvertToPixel(r, g, b);
+			data[y * m_Width + x] = pixel;
+		}
 	}
 
 	m_RenderTime = timer.ElapsedMillis();
