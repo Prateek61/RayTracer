@@ -8,9 +8,6 @@ void MainLayer::OnAttach()
 	m_ViewportTexture = std::make_unique<ViewportTexture>();
 	m_ViewportTexture->ShaderMeta.AddBasePath("../Assets/");
 	m_ViewportTexture->Load();
-
-	// Render the random image
-	RenderImage();
 }
 
 void MainLayer::OnUpdate(Engine::TimeStep ts)
@@ -28,10 +25,10 @@ void MainLayer::OnImGuiRender(Engine::TimeStep ts)
 	ImGui::Begin("Settings");
 
 	// Add a button, that renders a new random image if clicked
-	if (ImGui::Button("Render Image"))
+	/*if (ImGui::Button("Render Image"))
 	{
 		RenderImage();
-	}
+	}*/
 	// Show the render time
 	ImGui::Text("Render Time: %.2fms", m_RenderTime);
 
@@ -41,6 +38,9 @@ void MainLayer::OnImGuiRender(Engine::TimeStep ts)
 	{
 		m_CPURaytracer.SaveImage(m_AssetDir / "Out" / (m_Filename + ".png"));
 	}
+
+	ImGui::Text("CPU Raytracer");
+	m_CPURaytracer.OnImGuiRender();
 
 	ImGui::End();
 }

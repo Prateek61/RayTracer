@@ -1,5 +1,6 @@
 #include "CPURaytracer.h"
 #include "RayTracer/Utils.h"
+#include "imgui.h"
 
 namespace RT
 {
@@ -29,7 +30,8 @@ namespace RT
 				float g = static_cast<float>(y) / static_cast<float>(m_Height);
 				float b = 0.2f;
 
-				SetPixel(x, y, r, g, b);
+				auto ray = m_Camera.GetRay(x, y);
+				SetPixel(x, y, RayColor(ray));
 			}
 		}
 
@@ -46,6 +48,19 @@ namespace RT
 		Utils::Image::SaveImage(m_Width, m_Height, m_ImageBuffer, filePath);
 	}
 
+	void CPURaytracer::OnImGuiRender()
+	{
+		// Mark this section as camera
+		ImGui::Text("Camera");
+		m_Camera.OnImGuiRender();
+	}
+
+	glm::vec4 CPURaytracer::RayColor(const Ray& ray)
+	{
+		glm::vec3 color = m_Scene.RayColor(ray);
+		return { color, 1.0f };
+	}
+
 	void CPURaytracer::AddToTexture()
 	{
 		m_Texture->SetData(m_ImageBuffer);
@@ -57,9 +72,12 @@ namespace RT
 		m_Texture = std::make_shared<Engine::Texture2D>(spec);
 	}
 
-	void CPURaytracer::SetPixel(uint32_t x, uint32_t y, float r, float g, float b, float a)
+	void CPURaytracer::SetPixel(uint32_t x, uint32_t y, const glm::vec4& color)
 	{
 		uint32_t* data = m_ImageBuffer.As<uint32_t>();
-		data[y * m_Width + x] = Utils::Image::ConvertToPixel(r, g, b, a);
+		uint32_t pixel = Utils::Image::ConvertToPixel(color);
+		// LOG PIXEL as HEX
+		//LOG_TRACE("Pixel: {0:x}", pixel);
+		data[y * m_Width + x] = pixel;
 	}
 }

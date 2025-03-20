@@ -10,6 +10,10 @@ Simple interactive CPU ray tracer being written with C++, later porting to GPU u
 
     <img src="Content/Gradient.png" alt="Render" width="300">
 
+2. **Sphere**
+   
+    <img src="Content/Sphere.png" alt="Render" width="300">
+
 ## Project Setup
 1. Generate project files
     - Makefile

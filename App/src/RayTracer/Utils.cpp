@@ -9,7 +9,7 @@ namespace RT::Utils
 		const uint32_t green = static_cast<uint32_t>(g * 255.999f);
 		const uint32_t blue = static_cast<uint32_t>(b * 255.999f);
 		const uint32_t alpha = static_cast<uint32_t>(a * 255.999f);
-		const uint32_t pixel = alpha << 24 | red << 16 | green << 8 | blue;
+		const uint32_t pixel = alpha << 24 | red | green << 8 | blue << 16;
 		return pixel;
 	}
 
@@ -19,7 +19,7 @@ namespace RT::Utils
 		const uint32_t green = static_cast<uint32_t>(color.g * 255.999f);
 		const uint32_t blue = static_cast<uint32_t>(color.b * 255.999f);
 		const uint32_t alpha = static_cast<uint32_t>(color.a * 255.999f);
-		const uint32_t pixel = alpha << 24 | red << 16 | green << 8 | blue;
+		const uint32_t pixel = alpha << 24 | red | green << 8 | blue << 16;
 		return pixel;
 	}
 
