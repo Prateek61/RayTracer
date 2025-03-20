@@ -12,7 +12,7 @@ namespace RT
 		{
 		}
 
-		bool Hit(const Ray& r, float tMin, float tMax, HitRecord& rec) const override;
+		bool Hit(const Ray& r, Interval rayT, HitRecord& rec) const override;
 
 		const glm::vec3& center() const { return m_Center; }
 		float radius() const { return m_Radius; }

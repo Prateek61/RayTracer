@@ -15,3 +15,4 @@ inline float DegreesToRadians(float degrees)
 
 // Common headers
 #include "RayTracer/Ray.h"
+#include "RayTracer/Interval.h"

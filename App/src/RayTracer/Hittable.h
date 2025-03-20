@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RayTracer/Ray.h"
+#include "RayTracer/Base.h"
 
 namespace RT
 {
@@ -24,6 +24,6 @@ namespace RT
 	{
 	public:
 		virtual ~Hittable() = default;
-		virtual bool Hit(const Ray& r, float tMin, float tMax, HitRecord& rec) const = 0;
+		virtual bool Hit(const Ray& r, Interval rayT, HitRecord& rec) const = 0;
 	};
 }

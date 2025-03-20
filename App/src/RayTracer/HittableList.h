@@ -16,6 +16,6 @@ namespace RT
 		void Clear() { m_Objects.clear(); }
 		void Add(const std::shared_ptr<Hittable>& object) { m_Objects.emplace_back(object); }
 
-		bool Hit(const Ray& r, float tMin, float tMax, HitRecord& rec) const override;
+		bool Hit(const Ray& r, Interval rayT, HitRecord& rec) const override;
 	};
 }

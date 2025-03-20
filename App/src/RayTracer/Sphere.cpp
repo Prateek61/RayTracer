@@ -4,7 +4,7 @@
 
 namespace RT
 {
-	bool Sphere::Hit(const Ray& r, float tMin, float tMax, HitRecord& rec) const
+	bool Sphere::Hit(const Ray& r, Interval rayT, HitRecord& rec) const
 	{
 		glm::vec3 oc = m_Center - r.origin();
 		float a = glm::dot(r.direction(), r.direction());
@@ -21,10 +21,10 @@ namespace RT
 
 		// Find the nearest root that lies in the acceptable range
 		float root = (h - sqrt_d) / a;
-		if (root <= tMin || tMax <= root)
+		if (!rayT.surrounds(root))
 		{
 			root = (h + sqrt_d) / a;
-			if (root <= tMin || tMax <= root)
+			if (!rayT.surrounds(root))
 			{
 				return false;
 			}

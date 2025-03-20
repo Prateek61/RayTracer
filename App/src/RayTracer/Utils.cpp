@@ -1,5 +1,6 @@
 #include "Utils.h"
 #include "stb_image_write.h"
+#include "RayTracer/Interval.h"
 
 namespace RT::Utils
 {
@@ -15,10 +16,11 @@ namespace RT::Utils
 
 	uint32_t Image::ConvertToPixel(const glm::vec4& color)
 	{
-		const uint32_t red = static_cast<uint32_t>(color.r * 255.999f);
-		const uint32_t green = static_cast<uint32_t>(color.g * 255.999f);
-		const uint32_t blue = static_cast<uint32_t>(color.b * 255.999f);
-		const uint32_t alpha = static_cast<uint32_t>(color.a * 255.999f);
+		static const Interval intensity(0.000f, 0.999f);
+		const uint32_t red = static_cast<uint32_t>(intensity.clamp(color.r) * 256.0f);
+		const uint32_t green = static_cast<uint32_t>(intensity.clamp(color.g) * 256.0f);
+		const uint32_t blue = static_cast<uint32_t>(intensity.clamp(color.b) * 256.0f);
+		const uint32_t alpha = static_cast<uint32_t>(intensity.clamp(color.a) * 256.0f);
 		const uint32_t pixel = alpha << 24 | red | green << 8 | blue << 16;
 		return pixel;
 	}
