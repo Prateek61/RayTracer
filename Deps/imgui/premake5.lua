@@ -9,6 +9,14 @@ project "ImGui"
     {
         "./*.h",
         "./*.cpp",
+        "misc/cpp/imgui_stdlib.h",
+        "misc/cpp/imgui_stdlib.cpp"
+
+    }
+
+    includedirs
+    {
+        "."
     }
 
     filter "system:windows"

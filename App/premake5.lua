@@ -14,6 +14,7 @@ project "App"
 
     includedirs
     {
+        "src",
         "%{wks.location}/Engine",
         "%{IncludeDir.GLFW}",
         "%{IncludeDir.GLAD}",

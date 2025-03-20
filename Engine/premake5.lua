@@ -15,7 +15,11 @@ project "Engine"
         "./**.cpp",
         -- ImGUIZMO
         "%{IncludeDir.IMGUIZMO}/ImGuizmo.cpp",
-        "%{IncludeDir.IMGUIZMO}/ImGuizmo.h"
+        "%{IncludeDir.IMGUIZMO}/ImGuizmo.h",
+        -- STB Image
+        "%{IncludeDir.STB_IMAGE}/stb_image.cpp",
+        "%{IncludeDir.STB_IMAGE}/stb_image.h",
+        "%{IncludeDir.STB_IMAGE}/stb_image_write.h"
     }
 
     defines

@@ -1,12 +1,9 @@
 #include "ViewportTexture.h"
 
-ViewportTexture::ViewportTexture(uint32_t width, uint32_t height)
-	: Width(width),
-	  Height(height),
-	  ShaderMeta{"ViewportTexture", "Shader/ViewportTexture/vert.glsl", "Shader/ViewportTexture/frag.glsl"}
+ViewportTexture::ViewportTexture()
+	: ShaderMeta{"ViewportTexture", "Shader/ViewportTexture/vert.glsl", "Shader/ViewportTexture/frag.glsl"}
 {
 	InitializeVertexArray();
-	ResizeTexture(width, height);
 }
 
 void ViewportTexture::Draw() const
@@ -17,18 +14,8 @@ void ViewportTexture::Draw() const
 		return;
 	}
 
-	Texture->Bind(TextureSlot);
 	Shader->Bind();
 	Engine::RendererCommand::DrawIndexed(VA);
-}
-
-void ViewportTexture::ResizeTexture(uint32_t width, uint32_t height)
-{
-	Width = width;
-	Height = height;
-
-	Engine::TextureSpecification spec(width, height);
-	Texture = std::make_shared<Engine::Texture2D>(spec);
 }
 
 void ViewportTexture::Load()

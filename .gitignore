@@ -27,8 +27,8 @@ Intermediates/
 **.make
 
 # Asset files
-Assets/test/
 Assets/**/test/
+Assets/Out
 
 # Processed Texture
 **/*.glsl.processed
