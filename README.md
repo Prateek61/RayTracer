@@ -4,13 +4,7 @@ Simple interactive CPU ray tracer being written with C++, later porting to GPU u
 
 ## Renders
 
-<!-- ### Gradient
-<img src="Content/Gradient.png" alt="Render" width="400"> -->
-1. **Gradient**
-
-    <img src="Content/Gradient.png" alt="Render" width="300">
-
-2. **Sphere**
+1. **Sphere**
    
     <img src="Content/Sphere.png" alt="Render" width="300">
 

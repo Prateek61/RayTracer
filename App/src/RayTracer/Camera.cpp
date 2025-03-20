@@ -124,7 +124,7 @@ namespace RT
 	void Camera::CalculateViewport()
 	{
 		ViewportU = glm::vec3{ ViewportWidth, 0, 0 };
-		ViewportV = glm::vec3{ 0, -ViewportHeight, 0 };
+		ViewportV = glm::vec3{ 0, ViewportHeight, 0 };
 	}
 
 	void Camera::CalculatePixelDelta()

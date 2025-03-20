@@ -1,22 +1,34 @@
+#include "CPURaytracer.h"
+#include "CPURaytracer.h"
 #include "Scene.h"
 
 namespace RT
 {
-	bool Scene::HitSphere(const glm::vec3& center, float radius, const Ray& r)
+	float Scene::HitSphere(const glm::vec3& center, float radius, const Ray& r)
 	{
-		glm::vec3 oc = r.origin() - center;
+		glm::vec3 oc = center - r.origin();
+		// a = direction.length^2
 		float a = glm::dot(r.direction(), r.direction());
-		float b = 2.0f * glm::dot(oc, r.direction());
+		float h = glm::dot(r.direction(), oc);
 		float c = glm::dot(oc, oc) - radius * radius;
-		float discriminant = b * b - 4 * a * c;
-		return discriminant > 0;
+		float discriminant = h * h - a * c;
+
+		if (discriminant < 0.0f)
+		{
+			return -1.0f;
+		}
+
+
+		return (h - std::sqrt(discriminant)) / a;
 	}
 
 	glm::vec3 Scene::RayColor(const Ray& r)
 	{
-		if (HitSphere(glm::vec3(0, 0, -1), 0.5, r))
+		float t = HitSphere(glm::vec3(0.0f, 0.0f, -1.0f), 0.5f, r);
+		if (t > 0.0)
 		{
-			return { 1.0f, 0.0f, 0.0f };
+			glm::vec3 normal = glm::normalize(r.at(t) - glm::vec3(0.0f, 0.0f, -1.0f));
+			return 0.5f * glm::vec3(normal.x + 1.0f, normal.y + 1.0f, normal.z + 1.0f);
 		}
 
 		glm::vec3 unit_direction = glm::normalize(r.direction());

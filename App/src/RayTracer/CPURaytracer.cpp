@@ -50,9 +50,16 @@ namespace RT
 
 	void CPURaytracer::OnImGuiRender()
 	{
-		// Mark this section as camera
-		ImGui::Text("Camera");
-		m_Camera.OnImGuiRender();
+		static bool camera_options = false;
+		// Add a checkbox to toggle the Camera Options
+		ImGui::Checkbox("Camera Options", &camera_options);
+
+		if ( camera_options )
+		{
+			ImGui::Begin("Camera Options");
+			m_Camera.OnImGuiRender();
+			ImGui::End();
+		}
 	}
 
 	glm::vec4 CPURaytracer::RayColor(const Ray& ray)
