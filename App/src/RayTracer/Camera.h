@@ -17,6 +17,7 @@ namespace RT
 		glm::vec3 UpperLeft;
 		glm::vec3 Pixel00Loc;
 		float FocalLength;
+		bool Changed = true;
 
 		Camera(uint32_t width, uint32_t height, const glm::vec3& cameraPosition, float viewportHeight, float focal_length = 1.0);
 

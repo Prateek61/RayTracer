@@ -33,6 +33,8 @@ namespace RT
 		CalculatePixelDelta();
 		CalculateUpperLeft();
 		CalculatePixel00Loc();
+
+		Changed = true;
 	}
 
 	void Camera::SetViewportWidth(float width)
@@ -44,6 +46,8 @@ namespace RT
 		CalculatePixelDelta();
 		CalculateUpperLeft();
 		CalculatePixel00Loc();
+
+		Changed = true;
 	}
 
 	void Camera::SetViewportHeight(float width)
@@ -55,6 +59,8 @@ namespace RT
 		CalculatePixelDelta();
 		CalculateUpperLeft();
 		CalculatePixel00Loc();
+
+		Changed = true;
 	}
 
 	void Camera::SetFocalLength(float focal_length)
@@ -63,17 +69,18 @@ namespace RT
 
 		CalculateUpperLeft();
 		CalculatePixel00Loc();
+
+		Changed = true;
 	}
 
 	void Camera::SetCameraCenter(const glm::vec3& center)
 	{
-		if (CameraCenter == center)
-			return;
-
 		CameraCenter = center;
 
 		CalculateUpperLeft();
 		CalculatePixel00Loc();
+
+		Changed = true;
 	}
 
 	void Camera::OnImGuiRender()
