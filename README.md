@@ -6,7 +6,11 @@ Simple interactive CPU ray tracer being written with C++, later porting to GPU u
 
 1. **Sphere**
    
-    <img src="Content/Sphere.png" alt="Render" width="600">
+    <img src="Content/Sphere.png" alt="Render" width="500">
+
+2. **Diffuse Sphere**
+   
+    <img src="Content/DiffuseSphere.png" alt="Render" width="500">
 
 ## Project Setup
 1. Generate project files

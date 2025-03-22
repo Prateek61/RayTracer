@@ -37,6 +37,7 @@ namespace RT
 		Scene m_Scene;
 		uint32_t m_AccumulationCount = 0;
 		bool m_Accumulate = true;
+		int m_MaxDepth = 10;
 
 	private:
 		glm::vec4 RayColor(const Ray& ray);

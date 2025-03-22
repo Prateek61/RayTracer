@@ -30,6 +30,7 @@ namespace RT
 		void OnImGuiRender();
 
 		Ray GetRay(uint32_t x, uint32_t y) const;
+		glm::vec3 SampleSquare() const;
 
 	private:
 		void CalculateViewport();

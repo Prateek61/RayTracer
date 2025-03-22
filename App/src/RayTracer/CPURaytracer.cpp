@@ -1,12 +1,13 @@
 #include "CPURaytracer.h"
 #include "RayTracer/Utils.h"
 #include "imgui.h"
+#include <omp.h>
 
 namespace RT
 {
 	void CPURaytracer::BindTexture(const uint32_t slot) const
 	{
-		if ( m_Texture )
+		if (m_Texture)
 		{
 			m_Texture->Bind(slot);
 		}
@@ -54,11 +55,14 @@ namespace RT
 		// Show accumulation count
 		ImGui::Text("Accumulation Count: %d", m_AccumulationCount);
 
+		// Slider for max depth
+		ImGui::SliderInt("Max Depth", &m_MaxDepth, 1, 100);
+
 		static bool camera_options = false;
 		// Add a checkbox to toggle the Camera Options
 		ImGui::Checkbox("Camera Options", &camera_options);
 
-		if ( camera_options )
+		if (camera_options)
 		{
 			ImGui::Begin("Camera Options");
 			m_Camera.OnImGuiRender();
@@ -83,7 +87,7 @@ namespace RT
 
 	glm::vec4 CPURaytracer::RayColor(const Ray& ray)
 	{
-		glm::vec3 color = m_Scene.RayColor(ray);
+		glm::vec3 color = m_Scene.RayColor(ray, m_MaxDepth);
 		return { color, 1.0f };
 	}
 
@@ -115,7 +119,8 @@ namespace RT
 	void CPURaytracer::Accumulate()
 	{
 		glm::vec4* data = m_AccumulationBuffer.As<glm::vec4>();
-		for (uint32_t y = 0; y < m_Height; y++)
+		#pragma omp parallel for
+		for (int y = 0; y < (int)m_Height; y++)
 		{
 			for (uint32_t x = 0; x < m_Width; x++)
 			{

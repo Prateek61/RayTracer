@@ -1,6 +1,7 @@
 #include "CPURaytracer.h"
 #include "Scene.h"
 #include "Sphere.h"
+#include "RayTracer/Utils.h"
 
 namespace RT
 {
@@ -29,12 +30,19 @@ namespace RT
 		return (h - std::sqrt(discriminant)) / a;
 	}
 
-	glm::vec3 Scene::RayColor(const Ray& r)
+	glm::vec3 Scene::RayColor(const Ray& r, uint32_t depth)
 	{
-		HitRecord rec;
-		if (m_World.Hit(r, Interval(0, INF), rec))
+		if (depth <= 0)
 		{
-			return 0.5f * (rec.Normal + glm::vec3(1.0f));
+			return glm::vec3(0.0f);
+		}
+
+		HitRecord rec;
+		if (m_World.Hit(r, Interval(0.001f, INF), rec))
+		{
+			glm::vec3 direction = Utils::RandomOnHemisphere(rec.Normal);
+			//return 0.5f * (rec.Normal + glm::vec3(1.0f));
+			return 0.5f * RayColor(Ray(rec.P, direction), depth - 1);
 		}
 
 		glm::vec3 unit_direction = glm::normalize(r.direction());

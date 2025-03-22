@@ -118,14 +118,18 @@ namespace RT
 
 	Ray Camera::GetRay(uint32_t x, uint32_t y) const
 	{
-		if (x >= Width || y >= Height)
-		{
-			LOG_ERROR("Invalid Pixel Location");
-		}
+		auto offset = SampleSquare();
+		glm::vec3 pixel_sample = Pixel00Loc
+			+ ((static_cast<float>(x) + offset.x) * PixelDeltaU)
+			+ ((static_cast<float>(y) + offset.y) * PixelDeltaV);
 
-		glm::vec3 pixel_center = Pixel00Loc + (static_cast<float>(x) * PixelDeltaU) + (static_cast<float>(y) * PixelDeltaV);
-		glm::vec3 direction = pixel_center - CameraCenter;
+		glm::vec3 direction = pixel_sample - CameraCenter;
 		return Ray{ CameraCenter, direction };
+	}
+
+	glm::vec3 Camera::SampleSquare() const
+	{
+		return glm::vec3{ Engine::Random::Float() - 0.5, Engine::Random::Float() - 0.5, 0.0f };
 	}
 
 	void Camera::CalculateViewport()

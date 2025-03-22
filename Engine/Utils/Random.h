@@ -46,7 +46,7 @@ namespace Engine
 
 		static glm::vec3 InUnitSphere()
 		{
-			return normalize(Vec3(-1.0f, 1.0f));
+			return glm::normalize(Vec3(-1.0f, 1.0f));
 		}
 
 	private:
