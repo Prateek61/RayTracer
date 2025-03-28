@@ -1,7 +1,7 @@
 include "Dependencies.lua"
 
 workspace "RayTracer"
-    startproject "App"
+    startproject "SandBox"
     architecture "x64"
 
     configurations
@@ -25,5 +25,5 @@ group "Core"
 group ""
 
 group "App"
-    include "App"
+    include "SandBox"
 group ""
