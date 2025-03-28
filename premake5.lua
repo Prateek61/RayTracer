@@ -22,10 +22,10 @@ group ""
 
 group "Core"
     include "Engine"
-    -- include "SphereTracer/Core"
+    include "RayTracerSphere/Core"
 group ""
 
 group "App"
     include "SandBox"
-    -- include "SphereTracer/Application"
+    include "RayTracerSphere/Application"
 group ""
