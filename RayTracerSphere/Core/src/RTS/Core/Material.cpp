@@ -9,9 +9,6 @@ namespace RTS
 	{
 		bool modified = false;
 
-		ImGui::Text("Material Properties");
-		ImGui::Separator();
-
 		// Show the name of the material
 		modified |= ImGui::InputText("##Name", &Name);
 		ImGui::SameLine();
