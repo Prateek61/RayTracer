@@ -32,6 +32,7 @@ namespace RT
 
 		rec.T = root;
 		rec.P = r.at(rec.T);
+		rec.Mat = m_Mat;
 		glm::vec3 OutwardNormal = (rec.P - m_Center) / m_Radius;
 		rec.SetFaceNormal(r, OutwardNormal);
 

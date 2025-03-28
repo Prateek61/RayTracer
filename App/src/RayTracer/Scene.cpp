@@ -2,14 +2,30 @@
 #include "Scene.h"
 #include "Sphere.h"
 #include "RayTracer/Utils.h"
+#include "RayTracer/Material.h"
 
 namespace RT
 {
 	Scene::Scene()
 		: m_World()
 	{
-		m_World.Add(std::make_shared<Sphere>(glm::vec3(0.0f, 0.0f, -1.0f), 0.5f));
-		m_World.Add(std::make_shared<Sphere>(glm::vec3(0.0f, -100.5f, -1.0f), 100.0f));
+		auto material_ground = std::make_shared<Lambertian>(glm::vec3{ 0.8f, 0.8f, 0.0f });
+		auto material_center = std::make_shared<Lambertian>(glm::vec3{ 0.1f, 0.2f, 0.5f });
+		auto material_left = std::make_shared<Metal>(glm::vec3{ 0.8f, 0.8f, 0.8f });
+		auto material_right = std::make_shared<Metal>(glm::vec3{ 0.8f, 0.6f, 0.2f });
+
+		m_World.Add(
+			std::make_shared<Sphere>(glm::vec3{ 0.0f, -100.5f, -1.0f }, 100.0f, material_ground)
+		);
+		m_World.Add(
+			std::make_shared<Sphere>(glm::vec3{ 0.0f, 0.0f, -1.2f }, 0.5f, material_center)
+		);
+		m_World.Add(
+			std::make_shared<Sphere>(glm::vec3{ -1.0f, 0.0f, -1.0f }, 0.5f, material_left)
+		);
+		m_World.Add(
+			std::make_shared<Sphere>(glm::vec3{ 1.0f, 0.0f, -1.0f }, 0.5f, material_right)
+		);
 	}
 
 	float Scene::HitSphere(const glm::vec3& center, float radius, const Ray& r)
@@ -40,9 +56,11 @@ namespace RT
 		HitRecord rec;
 		if (m_World.Hit(r, Interval(0.001f, INF), rec))
 		{
-			glm::vec3 direction = Utils::RandomOnHemisphere(rec.Normal);
-			//return 0.5f * (rec.Normal + glm::vec3(1.0f));
-			return 0.5f * RayColor(Ray(rec.P, direction), depth - 1);
+			Ray scattered;
+			glm::vec3 attenuation;
+			if (rec.Mat->Scatter(r, rec, attenuation, scattered))
+				return attenuation * RayColor(scattered, depth - 1);
+			return glm::vec3(0.0f);
 		}
 
 		glm::vec3 unit_direction = glm::normalize(r.direction());

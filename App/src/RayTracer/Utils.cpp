@@ -39,4 +39,13 @@ namespace RT::Utils
 			LOG_ERROR("Failed to save image: {0}", filePath.string());
 		}
 	}
+	float Image::LinearToGamma(float linear, float gamma)
+	{
+		float val = std::pow(linear, gamma);
+		return val;
+	}
+	glm::vec4 Image::LinearToGamma(const glm::vec4& linear, float gamma)
+	{
+		return glm::sqrt(linear);
+	}
 }

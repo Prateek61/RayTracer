@@ -12,6 +12,14 @@ Simple interactive CPU ray tracer being written with C++, later porting to GPU u
    
     <img src="Content/DiffuseSphere.png" alt="Render" width="500">
 
+3. **Lambertian Sphere**
+
+    <img src="Content/LambertianSphere.png" alt="Render" width="500">
+
+4. **Metal**
+
+    <img src="Content/Metal.png" alt="Render" width="500">
+
 ## Project Setup
 1. Generate project files
     - Makefile

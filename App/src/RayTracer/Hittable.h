@@ -4,11 +4,14 @@
 
 namespace RT
 {
+	class Material;
+
 	class HitRecord
 	{
 	public:
 		glm::vec3 P;
 		glm::vec3 Normal;
+		std::shared_ptr<Material> Mat;
 		float T;
 		bool FrontFace;
 

@@ -7,9 +7,10 @@ namespace RT
 	class Sphere : public Hittable
 	{
 	public:
-		Sphere(const glm::vec3& center, float radius)
-			: m_Center(center), m_Radius(radius)
+		Sphere(const glm::vec3& center, float radius, std::shared_ptr<Material> mat)
+			: m_Center(center), m_Radius(std::fmax(0.0f, radius)), m_Mat(mat)
 		{
+			// TODO: Initialize the material
 		}
 
 		bool Hit(const Ray& r, Interval rayT, HitRecord& rec) const override;
@@ -19,5 +20,6 @@ namespace RT
 	private:
 		glm::vec3 m_Center;
 		float m_Radius;
+		std::shared_ptr<Material> m_Mat;
 	};
 }

@@ -58,6 +58,8 @@ namespace RT
 		// Slider for max depth
 		ImGui::SliderInt("Max Depth", &m_MaxDepth, 1, 100);
 
+		ImGui::Checkbox("Gamma Correction", &m_GammaCorrection);
+
 		static bool camera_options = false;
 		// Add a checkbox to toggle the Camera Options
 		ImGui::Checkbox("Camera Options", &camera_options);
@@ -111,6 +113,12 @@ namespace RT
 			for (uint32_t x = 0; x < m_Width; x++)
 			{
 				glm::vec4 color = accumulation_data[y * m_Width + x] / static_cast<float>(m_AccumulationCount);
+
+				if (m_GammaCorrection)
+				{
+					color = Utils::Image::LinearToGamma(color);
+				}
+
 				image_data[y * m_Width + x] = Utils::Image::ConvertToPixel(color);
 			}
 		}
