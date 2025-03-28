@@ -7,12 +7,12 @@ project "Engine"
     objdir ("%{wks.location}/bin/int/" .. outputdir .. "/%{prj.name}")
 
     pchheader "PCH.h"
-    pchsource "PCH.cpp"
+    pchsource "src/PCH.cpp"
 
     files
     {
-        "./**.h",
-        "./**.cpp",
+        "src/**.h",
+        "src/**.cpp",
         -- ImGUIZMO
         "%{IncludeDir.IMGUIZMO}/ImGuizmo.cpp",
         "%{IncludeDir.IMGUIZMO}/ImGuizmo.h",
@@ -30,7 +30,7 @@ project "Engine"
 
     includedirs
     {
-        ".", -- Include the root directory
+        "src", -- Include the root directory
         "%{IncludeDir.GLFW}",
         "%{IncludeDir.GLAD}",
         "%{IncludeDir.GLM}",

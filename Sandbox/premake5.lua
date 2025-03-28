@@ -15,7 +15,7 @@ project "Sandbox"
     includedirs
     {
         "src",
-        "%{wks.location}/Engine",
+        "%{wks.location}/Engine/src",
         "%{IncludeDir.GLFW}",
         "%{IncludeDir.GLAD}",
         "%{IncludeDir.GLM}",

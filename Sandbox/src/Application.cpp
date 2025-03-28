@@ -1,6 +1,6 @@
 #include "Engine.h"
 #include "MainLayer.h"
-#include "Core/EntryPoint.h"
+#include "Engine/Core/EntryPoint.h"
 
 class App : public Engine::Application
 {

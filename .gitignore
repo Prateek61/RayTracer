@@ -32,3 +32,6 @@ Assets/Out
 
 # Processed Texture
 **/*.glsl.processed
+
+# Ongoing 
+SphereTracer/
