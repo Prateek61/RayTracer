@@ -17,10 +17,10 @@ namespace RT
 		{
 		}
 
-		const glm::vec3& origin() const { return m_Orig; }
-		const glm::vec3& direction() const { return m_Dir; }
+		const glm::vec3& Origin() const { return m_Orig; }
+		const glm::vec3& Direction() const { return m_Dir; }
 
-		glm::vec3 at(float t) const
+		glm::vec3 At(float t) const
 		{
 			return m_Orig + t * m_Dir;
 		}

@@ -16,7 +16,7 @@ namespace RT
 	{
 	public:
 		CPURaytracer(uint32_t width, uint32_t height)
-			: RayTracer(width, height), m_ImageBuffer(width * height * 4), m_AccumulationBuffer(width * height * 4 * 4), m_Camera{ width, height, glm::vec3(0.0f, 0.0f, 0.0f), 2.0f, 1.0f },
+			: RayTracer(width, height), m_ImageBuffer(width * height * 4), m_AccumulationBuffer(width * height * 4 * 4), m_Camera{ width, height, glm::vec3(0.0f, 0.0f, 0.0f), 90.0f, 1.0f },
 			m_Scene()
 		{
 			InitializeTexture();

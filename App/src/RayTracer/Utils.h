@@ -34,5 +34,13 @@ namespace RT::Utils
 		constexpr float s = 1e-6f;
 		return (std::fabs(vec.r) < s) && (std::fabs(vec.g) < s) && (std::fabs(vec.b) < s);
 	}
+
+	static glm::vec3 refract(const glm::vec3& uv, const glm::vec3& n, float etaiOverEtat)
+	{
+		auto cos_theta = std::fmin(glm::dot(-uv, n), 1.0f);
+		glm::vec3 r_out_perp = etaiOverEtat * (uv + cos_theta * n);
+		glm::vec3 r_out_parallel = -std::sqrt(std::fabs(1.0f - glm::dot(r_out_perp, r_out_perp))) * n;
+		return r_out_perp + r_out_parallel;
+	}
 }
 

@@ -4,22 +4,43 @@
 
 namespace RT
 {
-	Camera::Camera(uint32_t width, uint32_t height, const glm::vec3& cameraPosition, float viewportHeight, float focal_length)
+	Camera::Camera(uint32_t width, uint32_t height, const glm::vec3& cameraPosition, float verticalFOV, float focal_length)
 	{
 		Width = width;
 		Height = height;
 		AspectRatio = static_cast<float>(Width) / static_cast<float>(Height);
 
+		VerticalFOV = verticalFOV;
 		FocalLength = focal_length;
-		ViewportHeight = viewportHeight;
-		ViewportWidth = AspectRatio * ViewportHeight;
 
 		CameraCenter = cameraPosition;
+
+		float theta = glm::radians(verticalFOV);
+		float h = glm::tan(theta / 2.0f);
+
+		ViewportHeight = 2.0f * h * FocalLength;
+		ViewportWidth = AspectRatio * ViewportHeight;
 
 		CalculateViewport();
 		CalculatePixelDelta();
 		CalculateUpperLeft();
 		CalculatePixel00Loc();
+	}
+
+	void Camera::SetFOV(float fov)
+	{
+		float theta = glm::radians(fov);
+		float h = glm::tan(theta / 2.0f);
+
+		ViewportHeight = 2.0f * h * FocalLength;
+		ViewportWidth = AspectRatio * ViewportHeight;
+
+		CalculateViewport();
+		CalculatePixelDelta();
+		CalculateUpperLeft();
+		CalculatePixel00Loc();
+
+		Changed = true;
 	}
 
 	void Camera::SetSize(uint32_t width, uint32_t height)
@@ -37,38 +58,11 @@ namespace RT
 		Changed = true;
 	}
 
-	void Camera::SetViewportWidth(float width)
-	{
-		ViewportWidth = width;
-		ViewportHeight = ViewportWidth / AspectRatio;
-
-		CalculateViewport();
-		CalculatePixelDelta();
-		CalculateUpperLeft();
-		CalculatePixel00Loc();
-
-		Changed = true;
-	}
-
-	void Camera::SetViewportHeight(float width)
-	{
-		ViewportHeight = width;
-		ViewportWidth = AspectRatio * ViewportHeight;
-
-		CalculateViewport();
-		CalculatePixelDelta();
-		CalculateUpperLeft();
-		CalculatePixel00Loc();
-
-		Changed = true;
-	}
-
 	void Camera::SetFocalLength(float focal_length)
 	{
 		FocalLength = focal_length;
 
-		CalculateUpperLeft();
-		CalculatePixel00Loc();
+		SetFOV(VerticalFOV);
 
 		Changed = true;
 	}
@@ -91,14 +85,10 @@ namespace RT
 			SetFocalLength(FocalLength);
 		}
 
-		// Viewport Width and Height
-		if (ImGui::SliderFloat("Viewport Width", &ViewportWidth, 0.1f, 10.0f))
+		// FOV
+		if (ImGui::SliderFloat("Vertical FOV", &VerticalFOV, 1.0f, 180.0f))
 		{
-			SetViewportWidth(ViewportWidth);
-		}
-		if (ImGui::SliderFloat("Viewport Height", &ViewportHeight, 0.1f, 10.0f))
-		{
-			SetViewportHeight(ViewportHeight);
+			SetFOV(VerticalFOV);
 		}
 
 		// Camera Center

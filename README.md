@@ -20,6 +20,10 @@ Simple interactive CPU ray tracer being written with C++, later porting to GPU u
 
     <img src="Content/Metal.png" alt="Render" width="500">
 
+5. **Dielectric**
+
+    <img src="Content/Dielectric.png" alt="Render" width="500">
+
 ## Project Setup
 1. Generate project files
     - Makefile

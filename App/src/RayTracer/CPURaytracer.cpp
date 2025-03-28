@@ -58,7 +58,14 @@ namespace RT
 		// Slider for max depth
 		ImGui::SliderInt("Max Depth", &m_MaxDepth, 1, 100);
 
-		ImGui::Checkbox("Gamma Correction", &m_GammaCorrection);
+		if (ImGui::Checkbox("Gamma Correction", &m_GammaCorrection))
+		{
+			if (!m_Accumulate)
+			{
+				ConvertAccumulationToImage();
+				AddToTexture();
+			}
+		}
 
 		static bool camera_options = false;
 		// Add a checkbox to toggle the Camera Options

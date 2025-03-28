@@ -17,15 +17,17 @@ namespace RT
 		glm::vec3 UpperLeft;
 		glm::vec3 Pixel00Loc;
 		float FocalLength;
+		float VerticalFOV;
 		bool Changed = true;
 
-		Camera(uint32_t width, uint32_t height, const glm::vec3& cameraPosition, float viewportHeight, float focal_length = 1.0);
+		Camera(uint32_t width, uint32_t height, const glm::vec3& cameraPosition, float verticalFOV, float focal_length = 1.0);
 
 		void SetSize(uint32_t width, uint32_t height);
 		void SetViewportWidth(float width);
 		void SetViewportHeight(float width);
 		void SetFocalLength(float focal_length);
 		void SetCameraCenter(const glm::vec3& center);
+		void SetFOV(float fov);
 
 		void OnImGuiRender();
 

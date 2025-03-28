@@ -6,9 +6,9 @@ namespace RT
 {
 	bool Sphere::Hit(const Ray& r, Interval rayT, HitRecord& rec) const
 	{
-		glm::vec3 oc = m_Center - r.origin();
-		float a = glm::dot(r.direction(), r.direction());
-		float h = glm::dot(r.direction(), oc);
+		glm::vec3 oc = m_Center - r.Origin();
+		float a = glm::dot(r.Direction(), r.Direction());
+		float h = glm::dot(r.Direction(), oc);
 		float c = glm::dot(oc, oc) - m_Radius * m_Radius;
 
 		float discriminant = h * h - a * c;
@@ -31,7 +31,7 @@ namespace RT
 		}
 
 		rec.T = root;
-		rec.P = r.at(rec.T);
+		rec.P = r.At(rec.T);
 		rec.Mat = m_Mat;
 		glm::vec3 OutwardNormal = (rec.P - m_Center) / m_Radius;
 		rec.SetFaceNormal(r, OutwardNormal);

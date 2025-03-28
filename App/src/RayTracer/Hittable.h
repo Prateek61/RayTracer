@@ -17,7 +17,7 @@ namespace RT
 
 		void SetFaceNormal(const Ray& r, const glm::vec3& outwardNormal)
 		{
-			FrontFace = glm::dot(r.direction(), outwardNormal) < 0.0f;
+			FrontFace = glm::dot(r.Direction(), outwardNormal) < 0.0f;
 			Normal = FrontFace ? outwardNormal : -outwardNormal;
 		}
 	};
