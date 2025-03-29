@@ -19,6 +19,7 @@ namespace RTS
 	Scene::Scene()
 	{
 		s_DefaultMaterial.Name = "DefaultMaterial";
+		AddMaterial(s_DefaultMaterial);
 	}
 
 	uint32_t Scene::AddSphere(const Sphere& sphere)

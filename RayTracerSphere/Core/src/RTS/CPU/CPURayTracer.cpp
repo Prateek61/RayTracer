@@ -205,7 +205,8 @@ namespace RTS
 		PROFILE_FUNCTION();
 
 		uint32_t* data = buffer.As<uint32_t>();
-		for (uint32_t i = 0; i < buffer.Size / sizeof(int); ++i)
+#pragma omp parallel for
+		for (int i = 0; i < static_cast<int>(buffer.Size / sizeof(int)); ++i)
 		{
 			data[i] = 0xffffffff;
 		}
@@ -224,7 +225,8 @@ namespace RTS
 
 		Color4* data = buffer.As<Color4>();
 		uint32_t* image_data = imageBuffer.As<uint32_t>();
-		for (uint32_t i = 0; i < m_Width * m_Height; ++i)
+#pragma omp parallel for
+		for (int i = 0; i < static_cast<int>(m_Width * m_Height); ++i)
 		{
 			image_data[i] = VectorUtils::ConvertToPixel(data[i]);
 		}
@@ -245,9 +247,10 @@ namespace RTS
 
 		Color4* data = m_AccumulationBuffer.As<Color4>();
 		uint32_t* image_data = m_RenderImageBuffer.As<uint32_t>();
-		for (uint32_t i = 0; i < m_Width * m_Height; ++i)
+#pragma omp parallel for
+		for (int i = 0; i < static_cast<int>(m_Width * m_Height); ++i)
 		{
-			Color4 color = data[i] / static_cast<float>(m_AccumulationCount);
+			Color4 color = data[static_cast<uint32_t>(i)] / static_cast<float>(m_AccumulationCount);
 			image_data[i] = VectorUtils::ConvertToPixel(color);
 		}
 
@@ -292,11 +295,12 @@ namespace RTS
 
 		Color4* data = m_AccumulationBuffer.As<Color4>();
 
-		for (uint32_t j = 0; j < m_Height; ++j)
+#pragma omp parallel for
+		for (int j = 0; j < static_cast<int>(m_Height); ++j)
 		{
 			for (uint32_t i = 0; i < m_Width; ++i)
 			{
-				Ray ray = m_Camera->GetRay(i, j);
+				Ray ray = m_Camera->GetRay(i, static_cast<uint32_t>(j));
 
 				Color color = m_SceneInteraction.RayColor(ray, Interval(0.0f, INF), m_Bounces);
 				Color4 color4 = Color4(color, 1.0f);
@@ -311,11 +315,12 @@ namespace RTS
 
 		Color4* data = m_DepthBuffer.As<Color4>();
 
-		for (uint32_t j = 0; j < m_Height; ++j)
+#pragma omp parallel for
+		for (int j = 0; j < static_cast<int>(m_Height); ++j)
 		{
 			for (uint32_t i = 0; i < m_Width; ++i)
 			{
-				Ray ray = m_Camera->GetRay(i, j);
+				Ray ray = m_Camera->GetRay(i, static_cast<uint32_t>(j));
 
 				float depth = m_SceneInteraction.Depth(ray, Interval(0.0f, INF));
 				depth = VectorUtils::ReinHardTonemap(depth);
@@ -330,11 +335,12 @@ namespace RTS
 
 		Color4* data = m_BaseColorBuffer.As<Color4>();
 
-		for (uint32_t j = 0; j < m_Height; ++j)
+#pragma omp parallel for
+		for (int j = 0; j < static_cast<int>(m_Height); ++j)
 		{
 			for (uint32_t i = 0; i < m_Width; ++i)
 			{
-				Ray ray = m_Camera->GetRay(i, j);
+				Ray ray = m_Camera->GetRay(i, static_cast<uint32_t>(j));
 				Color color = m_SceneInteraction.BaseColor(ray, Interval(0.0f, INF));
 				data[j * m_Width + i] = Color4(color, 1.0f);
 			}

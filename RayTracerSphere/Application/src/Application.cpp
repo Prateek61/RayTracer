@@ -9,7 +9,7 @@ public:
 	SphereTracer(const Engine::ApplicationProps& props)
 		: Engine::Application(props)
 	{
-		PushLayer(new MainLayer());
+		PushLayer(new MainLayer(props.WindowProps.Width, props.WindowProps.Height, props.AssetsDirectory));
 	}
 };
 
@@ -19,7 +19,7 @@ Engine::Application* Engine::CreateApplication(Engine::ApplicationCommandLineArg
 		"Sphere Ray Tracing",
 		1280,
 		720,
-		true
+		false
 	};
 	Engine::ApplicationProps application_props{
 		"Sphere Ray Tracing",

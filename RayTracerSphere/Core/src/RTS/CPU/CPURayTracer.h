@@ -15,7 +15,7 @@ namespace RTS
 		~CPURayTracer() override;
 
 		void Update(RenderTargetType type = RenderTargetType::None) override;
-		void BindTexture(uint32_t slot, RenderTargetType type) override;
+		void BindTexture(uint32_t slot, RenderTargetType type = RenderTargetType::None) override;
 		void OnImGUIRender() override;
 		void OnResize(uint32_t width, uint32_t height) override;
 		void OnSceneOrCameraChange() override;
