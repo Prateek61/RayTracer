@@ -1,4 +1,7 @@
 #include "Vector.h"
+#include "Engine.h"
+
+#include <glm/glm.hpp>
 
 namespace RTS
 {
@@ -22,4 +25,25 @@ namespace RTS
 		return pixel;
 	}
 
+	Vector VectorUtils::RandomInUnitDisk()
+	{
+		while(true)
+		{
+			auto p = Vector{ Engine::Random::Float(-1.0f, 1.0f), Engine::Random::Float(-1.0f, 1.0f), 0.0f };
+			if (glm::dot(p, p) >= 1.0f)
+			{
+				return p;
+			}
+		}
+	}
+
+	float VectorUtils::GammaCorrection(float value, float gamma)
+	{
+		return std::pow(value, 1.0f / gamma);
+	}
+
+	float VectorUtils::ReinHardTonemap(float value)
+	{
+		return value / (value + 1.0f);
+	}
 }

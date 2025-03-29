@@ -69,6 +69,23 @@ namespace RTS
 		return AmbientColor(ray);
 	}
 
+	Color SceneInteraction::BaseColor(const Ray& ray, Interval rayInterval)
+	{
+		auto hit_record = TraceRay(ray, rayInterval);
+		if (hit_record.HitDistance < 0)
+		{
+			return AmbientColor(ray);
+		}
+
+		return m_Scene->GetMaterial(hit_record.MaterialIndex).Albedo;
+	}
+
+	float SceneInteraction::Depth(const Ray& ray, Interval rayInterval)
+	{
+		auto hit_record = TraceRay(ray, rayInterval);
+		return hit_record.HitDistance;
+	}
+
 	Color SceneInteraction::AmbientColor(const Ray& ray)
 	{
 		Vector uint_direction = glm::normalize(ray.Direction());

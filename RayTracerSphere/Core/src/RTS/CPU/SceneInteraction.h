@@ -17,6 +17,8 @@ namespace RTS
 		static float IntersectSphere(const Sphere& sphere, const Ray& ray, Interval rayInterval);
 		HitRecord TraceRay(const Ray& ray, Interval rayInterval);
 		Color RayColor(const Ray& ray, Interval rayInterval, int bounces);
+		Color BaseColor(const Ray& ray, Interval rayInterval);
+		float Depth(const Ray& ray, Interval rayInterval);
 
 	private:
 		Scene* m_Scene;

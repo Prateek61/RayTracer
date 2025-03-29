@@ -34,6 +34,11 @@ namespace Engine
 				uint32_t>::max());
 		}
 
+		static float Float(float min, float max)
+		{
+			return Float() * (max - min) + min;
+		}
+
 		static glm::vec3 Vec3()
 		{
 			return {Float(), Float(), Float()};
