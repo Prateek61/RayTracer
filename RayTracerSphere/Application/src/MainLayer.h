@@ -11,10 +11,13 @@ public:
 	RTS::Material Mat;
 	RTS::Scene Scene;
 	RTS::Sphere Sphere;
+	RTS::MaterialImGUI MatImGUI;
+	RTS::SphereImGUI SphereImGUI;
+	RTS::SceneImGUI SceneImGUI;
 
 public:
 	MainLayer()
-		: Layer("MainLayer"), Mat(), Scene(), Sphere()
+		: Layer("MainLayer"), Mat(), Scene(), Sphere(), MatImGUI(&Mat), SphereImGUI(&Sphere, nullptr), SceneImGUI(&Scene)
 	{
 		Mat.Name = "Another Material";
 		Sphere.Name = "I'm just a Sphere";
@@ -22,6 +25,12 @@ public:
 		Scene.AddMaterial(Mat);
 		Mat.Name = "Yet Another Material";
 		Scene.AddMaterial(Mat);
+
+		Scene.AddSphere(Sphere);
+
+		MatImGUI = RTS::MaterialImGUI(&Mat);
+		SceneImGUI.SceneChanges();
+		SphereImGUI = RTS::SphereImGUI(&Sphere, &SceneImGUI);
 	}
 
 	void OnUpdate(Engine::TimeStep ts) override
@@ -33,7 +42,7 @@ public:
 	void OnImGuiRender(Engine::TimeStep ts) override
 	{
 		ImGui::Begin("Sphere Properties");
-		Sphere.ImGuiProperties(Scene);
+		SceneImGUI.ImGuiProperties();
 		ImGui::End();
 	}
 };

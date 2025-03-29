@@ -12,49 +12,46 @@ namespace
 
 namespace RTS
 {
-	bool Sphere::ImGuiProperties(Scene& scene)
+	SphereImGUI::SphereImGUI(Sphere* sphere, SceneImGUI* sceneImGUI)
+		: m_Sphere(sphere), m_SceneImGUI(sceneImGUI)
+	{
+	}
+	bool SphereImGUI::ImGuiProperties()
 	{
 		bool modified = false;
 
-		// Show the name of the sphere
-		modified |= ImGui::InputText("Name", &Name);
+		// Name
+		modified |= ImGui::InputText("##SphereName", &m_Sphere->Name);
+		ImGui::SameLine();
+		ImGui::Text("Name");
+
+		ImGui::Spacing();
 
 		// Center
-		modified |= ImGui::DragFloat3("Center", &Center.x, 0.1f);
+		modified |= ImGui::DragFloat3("##SphereCenter", &m_Sphere->Center.x, 0.1f);
+		ImGui::SameLine();
+		ImGui::Text("Center");
+
+		ImGui::Spacing();
+
 		// Radius
-		modified |= ImGui::DragFloat("Radius", &Radius, 0.1f);
+		modified |= ImGui::DragFloat("##SphereRadius", &m_Sphere->Radius, 0.1f);
+		ImGui::SameLine();
+		ImGui::Text("Radius");
 
 		ImGui::Separator();
 
-		// Materials
-		// Checkbox to edit material
-		if ( ImGui::BeginCombo("Select Material", scene.GetMaterial(MaterialID).Name.c_str()) )
-		{
-			// Get the list of material names
-			auto material_names = scene.GetMaterialNames();
-			for ( uint32_t i = 0; i < material_names.size(); ++i )
-			{
-				bool selected = MaterialID == i;
-				if ( ImGui::Selectable(material_names[i].c_str(), selected) )
-				{
-					MaterialID = i;
-					modified = true;
-				}
-				if ( selected )
-				{
-					ImGui::SetItemDefaultFocus();
-				}
-			}
-
-			ImGui::EndCombo();
-		}
+		// Material
+		modified |= m_SceneImGUI->ImGuiMaterialSelection(m_Sphere->MaterialID);
 
 		// View Material
-		ImGui::Checkbox("View Material", &m_ImGuiEditMaterial);
+		ImGui::Checkbox("##Sphere-ViewMaterial", &m_ImGuiEditMaterial);
+		ImGui::SameLine();
+		ImGui::Text("View Material");
+
 		if (m_ImGuiEditMaterial)
 		{
-
-			modified |= scene.GetMaterial(MaterialID).ImGuiProperties();
+			modified |= m_SceneImGUI->ImGuiMaterialProperties(m_Sphere->MaterialID);
 		}
 
 		return modified;
