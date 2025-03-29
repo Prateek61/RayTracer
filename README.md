@@ -1,6 +1,6 @@
 # Ray Tracer
 
-Simple interactive CPU ray tracer being written with C++, later porting to GPU using OpenGL.
+Simple interactive CPU ray tracer being written with C++, later porting to GPU with OpenGL.
 
 ## Renders
 
@@ -8,11 +8,7 @@ Simple interactive CPU ray tracer being written with C++, later porting to GPU u
    
     <img src="Content/Sphere.png" alt="Render" width="500">
 
-2. **Diffuse Sphere**
-   
-    <img src="Content/DiffuseSphere.png" alt="Render" width="500">
-
-3. **Lambertian Sphere**
+3. **Diffuse Sphere**
 
     <img src="Content/LambertianSphere.png" alt="Render" width="500">
 
