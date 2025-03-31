@@ -7,7 +7,7 @@
 #define ENABLE_LUA_LOG
 
 #define ENABLE_ASSERTS
-//#define ENABLE_PERFORMANCE_PROFILE
+#define ENABLE_PERFORMANCE_PROFILE
 
 #define BIT(x) (1 << (x))
 

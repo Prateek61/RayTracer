@@ -38,10 +38,6 @@ namespace RTS
 
 		if (type == RenderTargetType::Render)
 		{
-			if (m_AccumulationCount == 0)
-			{
-				ResetFloatBuffer(m_AccumulationBuffer);
-			}
 			Render();
 		}
 		else if (type == RenderTargetType::Depth)
@@ -154,7 +150,7 @@ namespace RTS
 		}
 
 		LOG_ERROR("Invalid RenderTargetType");
-		return Engine::Buffer();
+		return {}; // Return empty buffer
 	}
 
 	void CPURayTracer::ResizeBuffersAndTextures()
@@ -196,7 +192,7 @@ namespace RTS
 
 		for (uint32_t i = 0; i < buffer.Size / sizeof(float); ++i)
 		{
-			data[i] = 1.0f;
+			data[i] = 0.0f;
 		}
 	}
 
@@ -208,7 +204,7 @@ namespace RTS
 #pragma omp parallel for
 		for (int i = 0; i < static_cast<int>(buffer.Size / sizeof(int)); ++i)
 		{
-			data[i] = 0xffffffff;
+			data[i] = 0x000000;
 		}
 	}
 
@@ -240,6 +236,10 @@ namespace RTS
 		{
 			return;
 		}
+		if (m_AccumulationCount == 0)
+		{
+			ResetFloatBuffer(m_AccumulationBuffer);
+		}
 
 		Engine::Timer timer;
 		Accumulate();
@@ -247,16 +247,32 @@ namespace RTS
 
 		Color4* data = m_AccumulationBuffer.As<Color4>();
 		uint32_t* image_data = m_RenderImageBuffer.As<uint32_t>();
-#pragma omp parallel for
-		for (int i = 0; i < static_cast<int>(m_Width * m_Height); ++i)
+
+		if (m_AccumulationCount <= 0)
 		{
-			Color4 color = data[static_cast<uint32_t>(i)] / static_cast<float>(m_AccumulationCount);
-			image_data[i] = VectorUtils::ConvertToPixel(color);
+			ASSERT(false, "Accumulation count is 0")
 		}
 
-		AddToTexture(m_RenderImageBuffer, m_RenderTexture);
+		{
+			PROFILE_SCOPE("CPURayTracer::Render Converting color to Integer");
+#pragma omp parallel for
+			for (int j = 0; j < static_cast<int>(m_Height); ++j)
+			{
+				for (int i = 0; i < static_cast<int>(m_Width); ++i)
+				{
+					Color4 color = data[j * m_Width + i] / static_cast<float>(m_AccumulationCount);
+					if (color.r > 1.0f || color.g > 1.0f || color.b > 1.0f || color.a > 1.0f)
+					{
+						LOG_TRACE("WTF");
+					}
+					image_data[j * m_Width + i] = VectorUtils::ConvertToPixel(color);
+				}
+			}
+		}
 
-		m_AccumulationCount++;
+
+
+		AddToTexture(m_RenderImageBuffer, m_RenderTexture);
 	}
 
 	void CPURayTracer::RenderDepth()
@@ -295,18 +311,19 @@ namespace RTS
 
 		Color4* data = m_AccumulationBuffer.As<Color4>();
 
-#pragma omp parallel for
+#pragma omp parallel for schedule(dynamic)
 		for (int j = 0; j < static_cast<int>(m_Height); ++j)
 		{
-			for (uint32_t i = 0; i < m_Width; ++i)
+			for (int i = 0; i < static_cast<int>(m_Width); ++i)
 			{
-				Ray ray = m_Camera->GetRay(i, static_cast<uint32_t>(j));
-
+				Ray ray = m_Camera->GetRay(static_cast<uint32_t>(i), static_cast<uint32_t>(j));
 				Color color = m_SceneInteraction.RayColor(ray, Interval(0.0f, INF), m_Bounces);
 				Color4 color4 = Color4(color, 1.0f);
 				data[j * m_Width + i] += color4;
 			}
 		}
+
+		m_AccumulationCount++;
 	}
 
 	void CPURayTracer::ComputeDepth()

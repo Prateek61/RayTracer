@@ -47,21 +47,6 @@ namespace RTS
 		initialize();
 	}
 
-	Ray Camera::GetRay(uint32_t i, uint32_t j) const
-	{
-		PROFILE_FUNCTION();
-
-		Vector offset = SampleSquare();
-		Point pixel_sample = m_Pixel00_Loc
-							+ (m_PixelDeltaU * (static_cast<float>(i) + offset.x))
-							+ (m_PixelDeltaV * (static_cast<float>(j) + offset.y));
-
-		Point ray_origin = (m_DefocusAngle <= 0.0f) ? m_Center : DefocusDiskSample();
-		Vector ray_direction = glm::normalize(pixel_sample - ray_origin);
-
-		return Ray(ray_origin, ray_direction);
-	}
-
 	void Camera::initialize()
 	{
 		PROFILE_FUNCTION();
@@ -83,7 +68,7 @@ namespace RTS
 
 		// Calculate the vectors across the horizontal and down the vertical viewport edges
 		Vector viewport_u = m_U * viewport_width;
-		Vector viewport_v = m_V * viewport_height;
+		Vector viewport_v = -m_V * viewport_height;
 
 		// Calculate the pixel deltas
 		m_PixelDeltaU = viewport_u / static_cast<float>(m_Width);
@@ -97,17 +82,5 @@ namespace RTS
 		float defocus_radius = m_FocusDistance * glm::tan(glm::radians(m_DefocusAngle / 2));
 		m_DefocusDiskU = m_U * defocus_radius;
 		m_DefocusDiskV = m_V * defocus_radius;
-	}
-
-	Point Camera::DefocusDiskSample() const
-	{
-		// Returns a random point on the defocus disk
-		Vector p = VectorUtils::RandomInUnitDisk();
-		return m_Center + (m_DefocusDiskU * p.x) + (m_DefocusDiskV * p.y);
-	}
-
-	Vector Camera::SampleSquare() const
-	{
-		return { Engine::Random::Float() - 0.5f, Engine::Random::Float() - 0.5f, 0.0f };
 	}
 }

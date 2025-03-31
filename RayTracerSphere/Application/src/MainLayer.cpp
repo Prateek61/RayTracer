@@ -24,7 +24,7 @@ void MainLayer::OnUpdate(Engine::TimeStep ts)
 		m_CameraOrSceneChanged = false;
 	}
 
-	m_CPURayTracer.Update(RTS::RenderTargetType::Render);
+	m_CPURayTracer.Update(m_RenderTargetType);
 	m_CPURayTracer.BindTexture(0);
 	m_ViewportTexture->Draw();
 }
@@ -39,7 +39,23 @@ void MainLayer::OnImGuiRender(Engine::TimeStep ts)
 
 	// Frame time
 	ImGui::Text("Frame Time: %.2f ms", ts.GetMilliseconds());
-	ImGui::Text("FPS: %.2f ms", 1.0f / ts.GetSeconds());
+	ImGui::Text("FPS: %.1f", 1.0f / ts.GetSeconds());
+
+	// 3 buttons to change the render target
+	if (ImGui::Button("Render"))
+	{
+		m_RenderTargetType = RTS::RenderTargetType::Render;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Depth"))
+	{
+		m_RenderTargetType = RTS::RenderTargetType::Depth;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Base Color"))
+	{
+		m_RenderTargetType = RTS::RenderTargetType::BaseColor;
+	}
 
 	ImGui::End();
 
@@ -58,8 +74,13 @@ void MainLayer::OnImGuiRender(Engine::TimeStep ts)
 
 void MainLayer::InitializeScene()
 {
+	RTS::Material ground_material;
+	ground_material.Albedo = { 0.8f, 0.8f, 0.0f };
+	ground_material.Name = "Ground";
+
+	auto ground_material_id = m_Scene.AddMaterial(ground_material);
 	m_Scene.Spheres.emplace_back(
-		RTS::Sphere{ {0.0f, -100.0f, -1.0f}, 100.0f, 0, "Ground" }
+		RTS::Sphere{ {0.0f, -100.0f, -1.0f}, 100.0f, ground_material_id, "Ground" }
 	);
 	m_SceneImGUI.SceneChanges();
 }

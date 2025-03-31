@@ -50,7 +50,7 @@ namespace RTS
 		{
 			if ( Materials[i].Name == name )
 			{
-				return i + 1; // +1 to skip the default material
+				return i; // +1 to skip the default material
 			}
 		}
 		return 0; // Default material
@@ -82,7 +82,6 @@ namespace RTS
 				if ( selected )
 				{
 					ImGui::SetItemDefaultFocus();
-					modified = false;
 				}
 			}
 
@@ -165,11 +164,12 @@ namespace RTS
 		ImGui::SameLine();
 		ImGui::Text("View Materials");
 
+		uint32_t total_spheres = static_cast<uint32_t>(m_Scene->Spheres.size());
 		if ( m_ViewMaterials )
 		{
 			for ( uint32_t i = 0; i < m_MaterialImGUIs.size(); ++i )
 			{
-				ImGui::PushID(static_cast<int>(i));
+				ImGui::PushID(static_cast<int>(total_spheres + i));
 				bool open = ImGui::CollapsingHeader("##SceneMaterialCollapsingHeader");
 				ImGui::SameLine();
 				ImGui::Text("%s", m_MaterialImGUIs[i].GetMaterial()->Name.c_str());

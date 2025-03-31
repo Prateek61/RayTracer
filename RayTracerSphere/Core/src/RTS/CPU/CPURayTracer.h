@@ -48,7 +48,7 @@ namespace RTS
 		float m_LastAccumulationTime = 0.0f;
 		bool m_BaseColorRendered = false;
 		bool m_DepthRendered = false;
-		bool m_Accumulate = true;
+		bool m_Accumulate = false;
 
 	private:
 		void ResizeBuffersAndTextures();

@@ -18,8 +18,6 @@ namespace RTS
 		bool IsEmissive() const { return EmissionPower > 0.0f; }
 		Color GetEmissionColor() const { return EmissionColor * EmissionPower; }
 
-		bool ImGuiProperties();
-
 	private:
 		bool m_ImGuiIsEmissive = false;
 		bool m_ImGuiEmissiveColor = false;

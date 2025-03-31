@@ -11,7 +11,7 @@ namespace RTS
 
 		bool ImGuiProperties();
 		void SetSize(uint32_t width, uint32_t height);
-		Ray GetRay(uint32_t i, uint32_t j) const;
+		inline Ray GetRay(uint32_t i, uint32_t j) const;
 	private:
 		// Main Attributes
 		uint32_t m_Width, m_Height;
@@ -37,4 +37,33 @@ namespace RTS
 		Point DefocusDiskSample() const;
 		Vector SampleSquare() const;
 	};
+}
+
+// Inline Definitions
+namespace RTS
+{
+	inline Ray Camera::GetRay(uint32_t i, uint32_t j) const
+	{
+		Vector offset = SampleSquare();
+		Point pixel_sample = m_Pixel00_Loc
+			+ (m_PixelDeltaU * (static_cast<float>(i) + offset.x))
+			+ (m_PixelDeltaV * (static_cast<float>(j) + offset.y));
+
+		Point ray_origin = (m_DefocusAngle <= 0.0f) ? m_Center : DefocusDiskSample();
+		Vector ray_direction = glm::normalize(pixel_sample - ray_origin);
+
+		return Ray(ray_origin, ray_direction);
+	}
+
+	inline Vector Camera::SampleSquare() const
+	{
+		return { Engine::Random::Float() - 0.5f, Engine::Random::Float() - 0.5f, 0.0f };
+	}
+
+	inline Point Camera::DefocusDiskSample() const
+	{
+		// Returns a random point on the defocus disk
+		Vector p = VectorUtils::RandomInUnitDisk();
+		return m_Center + (m_DefocusDiskU * p.x) + (m_DefocusDiskV * p.y);
+	}
 }

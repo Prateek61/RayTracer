@@ -18,6 +18,7 @@ private:
 	RTS::CPURayTracer m_CPURayTracer;
 	std::filesystem::path m_AssetPath;
 	std::unique_ptr<ViewportTexture> m_ViewportTexture;
+	RTS::RenderTargetType m_RenderTargetType = RTS::RenderTargetType::Render;
 
 	// ImGUI
 	RTS::SceneImGUI m_SceneImGUI;

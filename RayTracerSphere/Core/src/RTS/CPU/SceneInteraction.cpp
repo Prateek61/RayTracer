@@ -1,5 +1,8 @@
 #include "SceneInteraction.h"
 
+#include "RTS/Common/Base.h"
+#include "RTS/Common/Base.h"
+
 namespace RTS
 {
 	float SceneInteraction::IntersectSphere(const Sphere& sphere, const Ray& ray, Interval rayInterval)
@@ -60,6 +63,7 @@ namespace RTS
 		hit_record.Position = ray.At(hit_distance);
 		glm::vec3 outward_normal = (hit_record.Position - sphere.Center) / sphere.Radius;
 		hit_record.SetFaceNormal(ray, outward_normal);
+		hit_record.MaterialIndex = sphere.MaterialID;
 
 		return hit_record;
 	}
@@ -84,6 +88,17 @@ namespace RTS
 	{
 		auto hit_record = TraceRay(ray, rayInterval);
 		return hit_record.HitDistance;
+	}
+
+	Color SceneInteraction::GetAttenuation(const HitRecord& hitRecord, const Material& material)
+	{
+		return material.Albedo + material.GetEmissionColor();
+	}
+
+	Ray SceneInteraction::GetScatteredRay(const HitRecord& hitRecord, const Material& material)
+	{
+		// Scatter the ray according to the material, not implemented in the Material class, implemented here
+		return {};
 	}
 
 	Color SceneInteraction::AmbientColor(const Ray& ray)

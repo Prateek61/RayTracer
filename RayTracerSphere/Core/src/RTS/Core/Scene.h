@@ -25,7 +25,6 @@ namespace RTS
 
 		Sphere& GetSphere(uint32_t id);
 		Material& GetMaterial(uint32_t id);
-		std::vector<std::string> GetMaterialNames() const;
 		uint32_t GetMaterialID(const std::string& name) const;
 	};
 
