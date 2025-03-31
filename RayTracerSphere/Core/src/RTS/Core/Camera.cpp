@@ -17,7 +17,7 @@ namespace RTS
 		bool modified = false;
 
 		// FOV
-		modified |= ImGui::DragFloat("FOV", &m_FOV, 0.1f, 0.1f, 100.0f);
+		modified |= ImGui::DragFloat("FOV", &m_FOV, 0.1f, 0.1f, 180.0f);
 
 		ImGui::Spacing();
 

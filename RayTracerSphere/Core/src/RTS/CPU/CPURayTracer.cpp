@@ -340,7 +340,7 @@ namespace RTS
 				Ray ray = m_Camera->GetRay(i, static_cast<uint32_t>(j));
 
 				float depth = m_SceneInteraction.Depth(ray, Interval(0.0f, INF));
-				depth = VectorUtils::ReinHardTonemap(depth);
+				depth = depth < 0.0f ? 1.0f : VectorUtils::ReinHardTonemap(depth);
 				data[j * m_Width + i] = Color4(Color(depth), 1.0f);
 			}
 		}
