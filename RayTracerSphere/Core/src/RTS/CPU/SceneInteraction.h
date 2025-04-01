@@ -20,8 +20,7 @@ namespace RTS
 		Color BaseColor(const Ray& ray, Interval rayInterval);
 		float Depth(const Ray& ray, Interval rayInterval);
 
-		static Color GetAttenuation(const HitRecord& hitRecord, const Material& material);
-		static Ray GetScatteredRay(const HitRecord& hitRecord, const Material& material);
+		static bool Scatter(const Ray& ray, const HitRecord& hitRecord, const Material& material, Ray& scatteredRay);
 
 	private:
 		Scene* m_Scene;

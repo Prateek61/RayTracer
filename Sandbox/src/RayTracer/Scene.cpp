@@ -12,16 +12,22 @@ namespace RT
 	Scene::Scene()
 		: m_World()
 	{
-		auto r = std::cos(glm::pi<float>() / 4.0f);
-
-		auto material_left = std::make_shared<Lambertian>(glm::vec3(0.0f, 0.0f, 1.0f));
-		auto material_right = std::make_shared<Lambertian>(glm::vec3(1.0f, 0.0f, 0.0f));
+		auto material_ground = std::make_shared<Lambertian>(glm::vec3{ 0.8f, 0.8f, 0.0f });
+		auto material_center = std::make_shared<Lambertian>(glm::vec3{ 0.1f, 0.2f, 0.5f });
+		auto material_left = std::make_shared<Metal>(glm::vec3{ 0.8f, 0.8f, 0.8f }, 0.0f);
+		auto material_right = std::make_shared<Metal>(glm::vec3{ 0.8f, 0.6f, 0.2f }, 1.0f);
 
 		m_World.Add(
-			std::make_shared<Sphere>(glm::vec3(-r, 0.0f, -1.0f), r, material_left)
+			std::make_shared<Sphere>(glm::vec3(0.0f, -100.5f, -1.0f), 100.0f, material_ground)
 		);
 		m_World.Add(
-			std::make_shared<Sphere>(glm::vec3(r, 0.0f, -1.0f), r, material_right)
+			std::make_shared<Sphere>(glm::vec3(0.0f, 0.0f, -1.2f), 0.5f, material_center)
+		);
+		m_World.Add(
+			std::make_shared<Sphere>(glm::vec3(-1.0f, 0.0f, -1.0f), 0.5f, material_left)
+		);
+		m_World.Add(
+			std::make_shared<Sphere>(glm::vec3(1.0f, 0.0f, -1.0f), 0.5f, material_right)
 		);
 	}
 

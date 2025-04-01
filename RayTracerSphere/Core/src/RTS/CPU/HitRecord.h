@@ -14,7 +14,9 @@ namespace RTS
 
 		void SetFaceNormal(const Ray& ray, const Vector& outwardNormal)
 		{
-			Normal = glm::faceforward(outwardNormal, ray.Direction(), outwardNormal);
+			//Normal = glm::faceforward(outwardNormal, outwardNormal, ray.Direction());
+			bool frontFace = glm::dot(ray.Direction(), outwardNormal) < 0;
+			Normal = frontFace ? outwardNormal : -outwardNormal;
 		}
 	};
 }

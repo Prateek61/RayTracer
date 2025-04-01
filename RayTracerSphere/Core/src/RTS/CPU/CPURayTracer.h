@@ -20,6 +20,7 @@ namespace RTS
 		void OnResize(uint32_t width, uint32_t height) override;
 		void OnSceneOrCameraChange() override;
 		Engine::Buffer GetImageBuffer(RenderTargetType type) override;
+		bool SaveImage(const std::filesystem::path& filepath, RenderTargetType type) const override;
 
 	private:
 		Camera* m_Camera;

@@ -65,7 +65,7 @@ namespace RTS
 
 	float VectorUtils::GammaCorrection(float value, float gamma)
 	{
-		return std::pow(value, 1.0f / gamma);
+		return value > 0 ? std::pow(value, 1.0f / gamma) : 0.0f;
 	}
 
 	float VectorUtils::ReinHardTonemap(float value)

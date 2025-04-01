@@ -2,6 +2,8 @@
 
 #include "imgui.h"
 
+#include "RTS/Utils/FileDialog.h"
+
 namespace RTS
 {
 	CPURayTracer::CPURayTracer(Camera* camera, Scene* scene, uint32_t width, uint32_t height)
@@ -80,8 +82,8 @@ namespace RTS
 		ImGui::Text("CPU Ray Tracer");
 
 		ImGui::Spacing();
-		// Show last render time
-		ImGui::Text("Last Render Time: %.2f ms", m_LastAccumulationTime);
+		// Show last accumulation time
+		ImGui::Text("Last Accumulation Time: %.2f ms", m_LastAccumulationTime);
 		ImGui::Spacing();
 
 		// Checkbox to toggle accumulation
@@ -151,6 +153,36 @@ namespace RTS
 
 		LOG_ERROR("Invalid RenderTargetType");
 		return {}; // Return empty buffer
+	}
+
+	bool CPURayTracer::SaveImage(const std::filesystem::path& filepath, RenderTargetType type) const
+	{
+		PROFILE_FUNCTION();
+
+		if (type == RenderTargetType::None)
+		{
+			type = m_ActiveRenderType;
+		}
+
+		if (type == RenderTargetType::Render)
+		{
+			RTS::FileDialog::SaveImage(m_Width, m_Height, m_RenderImageBuffer, filepath);
+		}
+		else if (type == RenderTargetType::Depth)
+		{
+			RTS::FileDialog::SaveImage(m_Width, m_Height, m_DepthImageBuffer, filepath);
+		}
+		else if (type == RenderTargetType::BaseColor)
+		{
+			RTS::FileDialog::SaveImage(m_Width, m_Height, m_BaseColorImageBuffer, filepath);
+		}
+		else
+		{
+			LOG_ERROR("Invalid RenderTargetType");
+			return false;
+		}
+
+		return true;
 	}
 
 	void CPURayTracer::ResizeBuffersAndTextures()
@@ -263,7 +295,7 @@ namespace RTS
 					Color4 color = data[j * m_Width + i] / static_cast<float>(m_AccumulationCount);
 					if (color.r > 1.0f || color.g > 1.0f || color.b > 1.0f || color.a > 1.0f)
 					{
-						LOG_TRACE("WTF");
+						LOG_WARN("Color value is greater than 1.0f");
 					}
 					image_data[j * m_Width + i] = VectorUtils::ConvertToPixel(color);
 				}
@@ -317,7 +349,7 @@ namespace RTS
 			for (int i = 0; i < static_cast<int>(m_Width); ++i)
 			{
 				Ray ray = m_Camera->GetRay(static_cast<uint32_t>(i), static_cast<uint32_t>(j));
-				Color color = m_SceneInteraction.RayColor(ray, Interval(0.0f, INF), m_Bounces);
+				Color color = m_SceneInteraction.RayColor(ray, Interval(0.001f, INF), m_Bounces);
 				Color4 color4 = Color4(color, 1.0f);
 				data[j * m_Width + i] += color4;
 			}

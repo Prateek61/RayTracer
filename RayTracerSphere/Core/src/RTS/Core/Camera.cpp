@@ -67,8 +67,8 @@ namespace RTS
 		m_V = glm::cross(m_W, m_U);
 
 		// Calculate the vectors across the horizontal and down the vertical viewport edges
-		Vector viewport_u = m_U * viewport_width;
-		Vector viewport_v = -m_V * viewport_height;
+		Vector viewport_u = viewport_width * m_U;
+		Vector viewport_v = viewport_height * m_V;
 
 		// Calculate the pixel deltas
 		m_PixelDeltaU = viewport_u / static_cast<float>(m_Width);

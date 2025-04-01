@@ -19,6 +19,8 @@ private:
 	std::filesystem::path m_AssetPath;
 	std::unique_ptr<ViewportTexture> m_ViewportTexture;
 	RTS::RenderTargetType m_RenderTargetType = RTS::RenderTargetType::Render;
+	std::filesystem::path m_SavePath;
+	std::string m_SaveName = "Render";
 
 	// ImGUI
 	RTS::SceneImGUI m_SceneImGUI;

@@ -19,6 +19,7 @@ namespace RTS
 		virtual void OnResize(uint32_t width, uint32_t height) = 0;
 		virtual void OnSceneOrCameraChange() = 0;
 
-		virtual Engine::Buffer GetImageBuffer(RenderTargetType type = RenderTargetType::None) = 0; // Render Buffer but converted to 8-bit image
+		virtual Engine::Buffer GetImageBuffer(RenderTargetType type = RenderTargetType::None) = 0; // Image Buffer but converted to 8-bit image
+		virtual bool SaveImage(const std::filesystem::path& filepath, RenderTargetType type = RenderTargetType::None) const = 0;
 	};
 }

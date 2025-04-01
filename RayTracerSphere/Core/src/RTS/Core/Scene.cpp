@@ -6,8 +6,6 @@
 
 namespace
 {
-	RTS::Material s_DefaultMaterial{};
-
 	RTS::Material s_NewMaterial{};
 	RTS::Sphere s_NewSphere{};
 	RTS::MaterialImGUI s_NewMaterialImGUI{ nullptr };
@@ -18,8 +16,9 @@ namespace RTS
 {
 	Scene::Scene()
 	{
-		s_DefaultMaterial.Name = "DefaultMaterial";
-		AddMaterial(s_DefaultMaterial);
+		Material default_material{};
+		default_material.Name = "Default";
+		Materials.push_back(default_material);
 	}
 
 	uint32_t Scene::AddSphere(const Sphere& sphere)
@@ -50,7 +49,7 @@ namespace RTS
 		{
 			if ( Materials[i].Name == name )
 			{
-				return i; // +1 to skip the default material
+				return i;
 			}
 		}
 		return 0; // Default material
@@ -148,7 +147,10 @@ namespace RTS
 
 				if ( open )
 				{
+					ImGui::Spacing();
 					modified |= m_SphereImGUIs[i].ImGuiProperties();
+					ImGui::Spacing();
+					ImGui::Separator();
 				}
 
 				ImGui::PopID();
@@ -170,6 +172,7 @@ namespace RTS
 			for ( uint32_t i = 0; i < m_MaterialImGUIs.size(); ++i )
 			{
 				ImGui::PushID(static_cast<int>(total_spheres + i));
+
 				bool open = ImGui::CollapsingHeader("##SceneMaterialCollapsingHeader");
 				ImGui::SameLine();
 				ImGui::Text("%s", m_MaterialImGUIs[i].GetMaterial()->Name.c_str());
